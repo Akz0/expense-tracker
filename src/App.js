@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
+import Navigation from './components/Navigation/Navigation';
+import TopBar from './components/TopBar';
+import MainContent from './containers/MainContent';
+import { MainContainer, ContentWrapper } from './Designs/MainContainer';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [sideBar, setSideBar] = useState(false)
+
+    const handleSideBar = () => {
+        const side = sideBar
+        setSideBar(!side)
+    }
+    const closeSideBar = () => {
+        setSideBar(false)
+    }
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <MainContainer>
+                    <TopBar onClickMenu={handleSideBar} />
+                    <ContentWrapper>
+                    <Navigation open={sideBar} />
+                    <MainContent />
+                    </ContentWrapper>
+                </MainContainer>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;
