@@ -9,7 +9,7 @@ import { Content } from '../Designs/MainContent'
 const MainContent = (props) => {
     return (
         <Content>
-            hello
+            {props.children}
         </Content>
     )
 

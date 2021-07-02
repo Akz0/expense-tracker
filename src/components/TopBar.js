@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react'
-import { LogOutContainer, MenuButton, TopBarContainer, TopTitle, TopTitleWrapper } from '../Designs/TopBar'
+import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '@iconify/react';
+
+
+import { LogOutContainer, MenuButton, TopBarContainer, TopTitle, TopTitleWrapper } from '../Designs/TopBar'
 import seekPrevious from '@iconify/icons-mdi-light/seek-previous';
 import menuIcon from '@iconify/icons-mdi-light/menu';
+import { BasicReducerConstants } from '../store/actions/constants';
 
 /**
 * @author
@@ -10,11 +14,27 @@ import menuIcon from '@iconify/icons-mdi-light/menu';
 **/
 
 const TopBar = (props) => {
-    useEffect(()=>{},[])
+    
+    const open = useSelector((state) => state.basic.showSideBar)
+    const dispatch=useDispatch()
+    const handleSideBar=()=>{
+        if(open){
+            dispatch({type:BasicReducerConstants.CLOSE_SIDEBAR})
+            
+        }else{
+            dispatch({type:BasicReducerConstants.OPEN_SIDEBAR})
+            
+        }
+    }
+
+    useEffect(()=>{
+        console.log('rerender of Top Bar Occurred')
+    },[])
+
     return (
         <TopBarContainer>
             <TopTitleWrapper>
-                <MenuButton onClick={props.onClickMenu}><Icon icon={menuIcon} style={{color: '#fff'}} /></MenuButton>
+                <MenuButton onClick={handleSideBar}><Icon icon={menuIcon} style={{color: '#fff'}} /></MenuButton>
                 <TopTitle to="/home">Expenses Tracker</TopTitle>
 
             </TopTitleWrapper>

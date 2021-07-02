@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Colors, Fonts } from "./DesignVariables";
+import { Colors, Fonts, mobileSize } from "./DesignVariables";
 import {Link} from 'react-router-dom'
 export const TopBarContainer=styled.div`
     width: 100%;
@@ -12,7 +12,7 @@ export const TopBarContainer=styled.div`
     justify-content: space-between;
     align-items: center;
     z-index:5; 
-    @media screen and (min-width: 700px) {
+    @media screen and (min-width: ${mobileSize}) {
         padding:40px;
         height: 75px;
     }
@@ -30,7 +30,7 @@ export const TopTitle=styled(Link)`
     font-size: 20px;
     padding: 0 10px;
     text-decoration: none;
-    @media screen and (min-width: 700px) {
+    @media screen and (min-width: ${mobileSize}) {
         font-size: 24px;
         padding: 0 20px;
     }
@@ -49,7 +49,7 @@ export const LogOutContainer=styled.div`
         cursor: pointer;
         opacity: 1;
     }
-    @media screen and (min-width:700px){
+    @media screen and (min-width:${mobileSize}){
         font-size: 18px;
     }
 `
@@ -58,7 +58,7 @@ export const MenuButton=styled.div`
     align-items:center;
     justify-content: center;
     font-size: 24px;
-   @media screen and (min-width: 700px) {
+   @media screen and (min-width: ${mobileSize}) {
     display: none;
     }
 

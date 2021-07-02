@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { NavLink } from 'react-router-dom'
-import { Colors } from "./DesignVariables";
+import { Colors, mobileSize } from "./DesignVariables";
 
 
 export const MainNavContainer = styled.div`
@@ -15,7 +15,7 @@ export const MainNavContainer = styled.div`
     justify-content: center;
     transform: translateX(${props => props.open ? '0' : '-100%'});
     transition: 0.5s all ease;
-   @media screen and (min-width: 700px) {
+   @media screen and (min-width: ${mobileSize}) {
         transform: translateX(0%);
         height:640px;
     }
@@ -50,7 +50,7 @@ export const NavItem = styled(NavLink)`
     &.active {
         color:${Colors.red};
     }
-    @media screen and (min-width: 700px) {
+    @media screen and (min-width: ${mobileSize}) {
         font-size: 18px;
     }
 
