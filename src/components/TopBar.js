@@ -7,6 +7,7 @@ import { LogOutContainer, MenuButton, TopBarContainer, TopTitle, TopTitleWrapper
 import seekPrevious from '@iconify/icons-mdi-light/seek-previous';
 import menuIcon from '@iconify/icons-mdi-light/menu';
 import { BasicReducerConstants } from '../store/actions/constants';
+import { Logout } from '../store/actions';
 
 /**
 * @author
@@ -38,7 +39,7 @@ const TopBar = (props) => {
                 <TopTitle to="/home">Expenses Tracker</TopTitle>
 
             </TopTitleWrapper>
-            <LogOutContainer onClick={props.logout}>
+            <LogOutContainer onClick={()=>dispatch(Logout())}>
                 <Icon icon={seekPrevious} width={'20px'} />Log Out</LogOutContainer>
         </TopBarContainer>
     )

@@ -2,6 +2,8 @@ import { ExpensesConstants } from "../actions/constants"
 
 const initState={
     expensesList:[],
+    error:null,
+    loading:false
 }
 
 const ExpensesReducer=(state=initState,action)=>{

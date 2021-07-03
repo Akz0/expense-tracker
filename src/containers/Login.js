@@ -1,16 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
 import LabelInput from '../components/UI/LabelAndInput';
+import Loader from '../components/UI/Loader';
 import { Button, Button2 } from '../Designs/Buttons';
 import { Colors, Fonts, mobileSize } from '../Designs/DesignVariables';
 import { Texts } from '../Designs/InputsLabels';
 import { Row, UiContainer } from '../Designs/UIContainer';
+import { Login, SignUp ,DemoAuth} from '../store/actions';
+
 
 /**
 * @author
 * @function Authentication
 **/
-
+function isEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
 const MainAuth = styled.div`
     background:${Colors.darkBlue};
     width: 100%;
@@ -25,7 +32,7 @@ const MainAuth = styled.div`
     }
 `;
 
-const AuthWapper = styled.div`
+const AuthWapper = styled.form`
     width: 100%;
     height: 60vh;
     display: flex;
@@ -52,12 +59,17 @@ const Title = styled.p`
 `;
 const AuthPage = (props) => {
     //Store Items 
-    
+    const authStatus = useSelector(state => state.auth.authenticated)
+    const errorStatus = useSelector(state => state.auth.error)
+    const loading = useSelector(state => state.auth.loading)
+    const dispatch=useDispatch()
+
     //local States
     const [authAction, setAuthAction] = useState('login')
-    // Input Managements
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+
     const handlePassword = (event) => {
         setPassword(event.target.value)
     }
@@ -65,42 +77,81 @@ const AuthPage = (props) => {
         setEmail(event.target.value)
     }
 
+    //Render Auth Variations
     const authTypeRender = () => {
         let render
         if (authAction === 'login') {
             render = (
-                <><Button big long>Log In</Button>
+                <><Button type="submit" big long>Log In</Button>
                     <Texts>New User? </Texts>
-                    <Texts link onClick={() => { setAuthAction('new')}}>Register Here</Texts>
+                    <Texts link onClick={() => { setAuthAction('new') }}>Register Here</Texts>
                 </>
             )
         }
         if (authAction === 'new') {
             render = (
-                <><Button big long>Register</Button>
+                <><Button type="submit" big long>Register</Button>
                     <Texts>Already have a account?</Texts>
-                    <Texts link onClick={() => { setAuthAction('login')}}>Log In</Texts>
+                    <Texts link onClick={() => { setAuthAction('login') }}>Log In</Texts>
                 </>
             )
         }
         return render
     }
+
+    // Authentication Functions
+    const login=(email,password)=>{
+        dispatch(Login(email,password))
+        
+    }
+    const singup =(email,password)=>{
+        dispatch(SignUp(email,password))
+    }
+
+    const handleAuthSubmit = (event) => {
+        event.preventDefault()
+        if (isEmail(email) && password.length > 5) {
+            setError('')
+            if (authAction === 'login') {
+                login(email,password)
+            }
+            if (authAction === 'new') {
+                singup(email,password)
+            }
+        }
+        else {
+            if (!isEmail(email)) {
+                setError('Invalid Email')
+            }
+            if (password.length < 6) {
+                setError('Password must be atleast 6 characters.')
+            }
+            if (password.length < 6 && !isEmail(email)) {
+                setError('Invalid Email. Password must be atleast 6 characters.')
+            }
+        }
+    }
+    
     return (
         <MainAuth>
-            <AuthWapper>
-                <Title>Expenses Tracker</Title>
-                <UiContainer>
-                    <Row>
-                        <LabelInput value={email} label='Email' type='email' placeholder='Enter Your Email' onChange={handleEmail} />
-                    </Row>
-                    <Row>
-                        <LabelInput value={password} label='Password' type='password' placeholder='Enter Your Password' onChange={handlePassword} />
-                    </Row>
-                    <Texts error></Texts>
-                    {authTypeRender()}
-                    <Button2 big long>DEMO</Button2>
-                </UiContainer>
-            </AuthWapper>
+            {loading ? <Loader />
+                :
+                <AuthWapper onSubmit={(event) => handleAuthSubmit(event)}>
+                    <Title>Expenses Tracker</Title>
+                    <UiContainer>
+                        <Row>
+                            <LabelInput value={email} label='Email' type='email' placeholder='Enter Your Email' onChange={handleEmail} />
+                        </Row>
+                        <Row>
+                            <LabelInput value={password} label='Password' type='password' placeholder='Enter Your Password' onChange={handlePassword} />
+                        </Row>
+                        <Texts error>{errorStatus?error?error:errorStatus:error}</Texts>
+                        {authTypeRender()}
+                        <Button2 big long onClick={()=>dispatch(DemoAuth())}>DEMO</Button2>
+                    </UiContainer>
+                </AuthWapper>
+            }
+            
         </MainAuth>
     )
 
