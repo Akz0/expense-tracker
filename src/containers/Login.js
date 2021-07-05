@@ -1,23 +1,21 @@
-import React, { useState , useEffect } from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
-import LabelInput from '../components/UI/LabelAndInput';
+import LabelInput from '../components/UI/LabelInput';
 import Loader from '../components/UI/Loader';
 import { Button, Button2 } from '../Designs/Buttons';
 import { Colors, Fonts, mobileSize } from '../Designs/DesignVariables';
 import { Texts } from '../Designs/InputsLabels';
 import { Row, UiContainer } from '../Designs/UIContainer';
 import { Login, SignUp ,DemoAuth} from '../store/actions';
+import EmailCheck from '../Utilities/email';
 
 
 /**
 * @author
 * @function Authentication
 **/
-function isEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-}
 const MainAuth = styled.div`
     background:${Colors.darkBlue};
     width: 100%;
@@ -58,12 +56,19 @@ const Title = styled.p`
     }
 `;
 const AuthPage = (props) => {
+    
     //Store Items 
     const authStatus = useSelector(state => state.auth.authenticated)
     const errorStatus = useSelector(state => state.auth.error)
     const loading = useSelector(state => state.auth.loading)
     const dispatch=useDispatch()
 
+    useEffect(()=>{
+        if(authStatus){
+            props.history.push('/home')
+        }
+    },[])
+    
     //local States
     const [authAction, setAuthAction] = useState('login')
     const [email, setEmail] = useState('')
@@ -110,7 +115,7 @@ const AuthPage = (props) => {
 
     const handleAuthSubmit = (event) => {
         event.preventDefault()
-        if (isEmail(email) && password.length > 5) {
+        if (EmailCheck(email) && password.length > 5) {
             setError('')
             if (authAction === 'login') {
                 login(email,password)
@@ -120,13 +125,13 @@ const AuthPage = (props) => {
             }
         }
         else {
-            if (!isEmail(email)) {
+            if (!EmailCheck(email)) {
                 setError('Invalid Email')
             }
             if (password.length < 6) {
                 setError('Password must be atleast 6 characters.')
             }
-            if (password.length < 6 && !isEmail(email)) {
+            if (password.length < 6 && !EmailCheck(email)) {
                 setError('Invalid Email. Password must be atleast 6 characters.')
             }
         }

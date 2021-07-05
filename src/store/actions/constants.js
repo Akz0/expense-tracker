@@ -32,5 +32,7 @@ export const ExpensesConstants={
 }
 
 export const UserConstants={
-
+    EDIT_REQUEST:'EDIT_REQUEST',
+    EDIT_SUCCESS:'EDIT_SUCCESS',
+    EDIT_FAILURE:'EDIT_FAILURE'
 }

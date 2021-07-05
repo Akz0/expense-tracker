@@ -1,10 +1,11 @@
-import { AuthConstants } from "../actions/constants"
+import { AuthConstants, UserConstants } from "../actions/constants"
 
 const initState = {
     authenticated: false,
     loading: false,
     error: null,
-    user: null
+    user: null,
+    editError:null,
 }
 
 const AuthReducer = (state = initState, action) => {
@@ -22,7 +23,7 @@ const AuthReducer = (state = initState, action) => {
                 authenticated: true,
                 loading: false,
                 user: action.payload.user,
-                error:null
+                error: null
             }
             break;
         case AuthConstants.LOGIN_FAILURE:
@@ -72,7 +73,7 @@ const AuthReducer = (state = initState, action) => {
                 authenticated: true,
                 loading: false,
                 user: action.payload.user,
-                error:null
+                error: null
             }
             break;
         case AuthConstants.SIGNUP_FAILURE:
@@ -82,6 +83,30 @@ const AuthReducer = (state = initState, action) => {
                 loading: false,
                 user: null,
                 error: action.payload.error
+            }
+            break;
+        //Edit
+        case UserConstants.EDIT_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break
+        case UserConstants.EDIT_SUCCESS:
+            state = {
+                ...state,
+                authenticated: true,
+                loading: false,
+                user: action.payload.user,
+                editError: null
+            }
+            break;
+        case UserConstants.EDIT_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                user:action.payload.user,
+                editError: action.payload.editError
             }
             break;
         default: return state;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import './App.css';
@@ -15,7 +15,7 @@ import { MainContainer, ContentWrapper } from './Designs/MainContainer';
 
 function App() {
     const authStatus = useSelector(state => state.auth.authenticated)
-    
+
 
     const render = () => {
         if (authStatus) {
@@ -30,12 +30,13 @@ function App() {
                             <Route path="/expenses" exact component={Expenses} />
                             <Route path="/charts" exact component={Charts} />
                             <Route path="/settings" exact component={Settings} />
-                            <Redirect to="/home"/>
+                            <Redirect to="/home" />
                         </MainContent>
                     </ContentWrapper>
                 </>
             )
         } else {
+
             return (
                 <>
                     <Route path="/" exact component={AuthPage} />

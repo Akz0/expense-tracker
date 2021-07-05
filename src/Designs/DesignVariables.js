@@ -8,6 +8,7 @@ export const Colors={
     blue2:'#30475E',
     blue3:'#1c1f2d',
     yellow:'#fcbe07',
+    green:'#0DE396',
 }
 
 export const Fonts={

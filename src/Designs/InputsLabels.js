@@ -1,19 +1,22 @@
 import styled from "styled-components";
+import { keyframes } from "styled-components";
 import { Colors, mobileSize } from "./DesignVariables";
 
 export const Input = styled.input`
     width:100%;
     padding:10px 10px;
-    border:1px solid ${Colors.grey};
+    border:1px solid ${props=>props.dark?Colors.blue1:Colors.grey};
     color:${Colors.white};
-    background: transparent;
+    background: ${props=>props.dark?Colors.blue3:'transparent'};
     font-size: ${props=>props.big?'20px':'16px'};
-
+    border-radius: ${props=>props.round?'5px':'0px'};
     :focus{
         outline: none;
         border:1px solid ${Colors.red};
     }
-
+    :disabled{
+        opacity: 0.5;
+    }
     @media screen and (min-width:${mobileSize}){
         padding:10px 10px;
     }
@@ -33,7 +36,7 @@ export const Texts = styled.p`
     font-size: ${props=>props.big?'20px':'16px'};
     text-decoration: ${props=>props.link?'underline':'none'};
     cursor: ${props=>props.link?'pointer':''};
-    color:${props=>props.error?Colors.yellow:props.link?Colors.red:Colors.white};
+    color:${props=>props.error?Colors.yellow:props.link?Colors.red:props.safe?Colors.green:Colors.white};
     padding:10px 0 15px 0;
     @media screen and (min-width:${mobileSize}){
         
@@ -42,9 +45,9 @@ export const Texts = styled.p`
 export const InputsContainer=styled.div`
     
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: ${props=>props.row?'row':'column'};
+    justify-content: ${props=>props.row?'space-between':'center'};
+    align-items: ${props=>props.row?'center':'flex-start'};
     width:100%;
     padding:5px 5px;
 
