@@ -30,17 +30,17 @@ function App() {
                             <Route path="/expenses" exact component={Expenses} />
                             <Route path="/charts" exact component={Charts} />
                             <Route path="/settings" exact component={Settings} />
-                            <Redirect to="/home" />
+                            <Redirect to="/home"/>
                         </MainContent>
                     </ContentWrapper>
                 </>
             )
-        } else {
-
+        } else {    
+            
             return (
                 <>
                     <Route path="/" exact component={AuthPage} />
-                    <Redirect to="/" />
+                    <Redirect to="/"/>
                 </>
             )
         }

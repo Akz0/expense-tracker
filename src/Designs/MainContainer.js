@@ -14,7 +14,7 @@ export const MainContainer=styled.div`
 `
 export const ContentWrapper=styled.div`
     width: 100%;
-    height: calc(100vh-55px);
+    height: calc(100vh-'55px');
     background-color: ${Colors.darkBlue};
     font-family: ${Fonts.roboto};
     display: flex;

@@ -4,11 +4,33 @@ import { Colors, mobileSize } from "./DesignVariables";
 
 export const Input = styled.input`
     width:100%;
-    padding:10px 10px;
+    padding:5px 5px;
     border:1px solid ${props=>props.dark?Colors.blue1:Colors.grey};
     color:${Colors.white};
     background: ${props=>props.dark?Colors.blue3:'transparent'};
-    font-size: ${props=>props.big?'20px':'16px'};
+    font-size: ${props=>props.big?'26px':'12px'};
+    border-radius: ${props=>props.round?'5px':'0px'};
+    ::-webkit-calendar-picker-indicator { color: white; }
+    :focus{
+        outline: none;
+        border:1px solid ${Colors.red};
+    }
+    :disabled{
+        opacity: 0.5;
+    }
+    @media screen and (min-width:${mobileSize}){
+        padding:10px 10px;
+        font-size: ${props=>props.big?'20px':'16px'};
+    }
+`
+
+export const Select = styled.select`
+    width:100%;
+    padding:5px 5px;
+    border:1px solid ${props=>props.dark?Colors.blue1:Colors.grey};
+    color:${Colors.white};
+    background: ${props=>props.dark?Colors.blue3:'transparent'};
+    font-size: ${props=>props.big?'16px':'12px'};
     border-radius: ${props=>props.round?'5px':'0px'};
     :focus{
         outline: none;
@@ -19,16 +41,48 @@ export const Input = styled.input`
     }
     @media screen and (min-width:${mobileSize}){
         padding:10px 10px;
+        font-size: ${props=>props.big?'20px':'16px'};
     }
 `
+export const Option=styled.option`
+color:black;
+    background-color: 'transparent';
+`
+
+export const TextArea = styled.textarea`
+    width:100%;
+    resize:none;
+    height: fit-content;
+    padding:5px 5px;
+    border:1px solid ${props=>props.dark?Colors.blue1:Colors.grey};
+    color:${Colors.white};
+    background: ${props=>props.dark?Colors.blue3:'transparent'};
+    font-size: ${props=>props.big?'16px':'12px'};
+    border-radius: ${props=>props.round?'5px':'0px'};
+    :focus{
+        outline: none;
+        border:1px solid ${Colors.red};
+    }
+    :disabled{
+        opacity: 0.5;
+    }
+    @media screen and (min-width:${mobileSize}){
+        padding:10px 10px;
+        font-size: ${props=>props.big?'20px':'16px'};
+    }
+`
+
+
 export const Label = styled.p`
     padding-left:5px;
-    padding-bottom:10px;
-    font-size: ${props=>props.big?'20px':'16px'};
+    padding-bottom:5px;
+    font-size: ${props=>props.big?'16px':'12px'};
     color:${Colors.white};
     
     @media screen and (min-width:${mobileSize}){
-        
+        font-size: ${props=>props.big?'20px':'16px'};
+        padding-left:5px;
+        padding-bottom:10px;
     }
 `
 export const Texts = styled.p`
@@ -50,7 +104,6 @@ export const InputsContainer=styled.div`
     align-items: ${props=>props.row?'center':'flex-start'};
     width:100%;
     padding:5px 5px;
-
     @media screen and (min-width:${mobileSize}){
         padding:0 10px;
         width:${props=>props.half?'50%':'100%'};

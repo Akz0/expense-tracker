@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 import "firebase/auth"
-
+import "firebase/firestore"
 
 // const FIREBASE_API_KEY = "AIzaSyC-W_eAfmy9vIdXOB-BHK3i-Y1ZqFncpNo"
 // const AUTH_DOMAIN = "expense-tracker-development-1.firebaseapp.com"
@@ -20,4 +20,5 @@ const firebaseConfig = {
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const auth=firebaseApp.auth()
+export const expensesDatabase=firebase.firestore().collection('expenses')
 export default firebaseApp

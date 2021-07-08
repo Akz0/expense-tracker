@@ -28,11 +28,11 @@ export const TopTitle=styled(Link)`
     font-family: ${Fonts.robotoSlab};
     font-weight: bold;
     font-size: 20px;
-    padding: 0 10px;
+    margin: 0 10px;
     text-decoration: none;
     @media screen and (min-width: ${mobileSize}) {
         font-size: 24px;
-        padding: 0 20px;
+        margin: 0 20px;
     }
 `
 export const LogOutContainer=styled.div`
@@ -58,6 +58,7 @@ export const MenuButton=styled.div`
     align-items:center;
     justify-content: center;
     font-size: 24px;
+    cursor: pointer;
    @media screen and (min-width: ${mobileSize}) {
     display: none;
     }

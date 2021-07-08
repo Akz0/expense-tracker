@@ -1,13 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+
 import LabelInput from '../components/UI/LabelInput';
 import Loader from '../components/UI/Loader';
 import { Button2 } from '../Designs/Buttons';
-import { Colors, Fonts, mobileSize } from '../Designs/DesignVariables';
 import { Texts } from '../Designs/InputsLabels';
-import { Modal, Row, UiContainer } from '../Designs/UIContainer';
+import { Modal, Row, UiContainer ,Title,Wrapper,Container} from '../Designs/UIContainer';
 import { DeleteUser, UpdateUserPassword, UpdateUserProfile } from '../store/actions';
 import EmailCheck from '../Utilities/email';
 
@@ -16,30 +15,7 @@ import EmailCheck from '../Utilities/email';
 * @function Settings
 **/
 
-const Title = styled.p`
-    color: ${Colors.blue2};
-    font-family: ${Fonts.robotoSlab};
-    font-weight: bold;
-    font-size: 20px;
-    text-decoration: none;
-    @media screen and (min-width: ${mobileSize}) {
-        font-size: 35px;
-    }
-`;
-const Wrapper = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-const Container = styled.form`
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   width: 100%;
-   opacity: ${props => props.verification ? '0.3' : '1'};
-   pointer-events:${props => props.verification ? 'none' : ''};;
-`;
+
 
 
 const Settings = (props) => {
