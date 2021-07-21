@@ -6,12 +6,7 @@ import { Input, InputsContainer, Label, Option, Select, TextArea } from '../../D
 * @function LabelInput
 **/
 
-const LabelInput = (props) => {
-    const { value, label } = props
-    useEffect(() => {
-        console.log('Label-Input Rendered for - ', label)
-    }, [value, label])
-
+const LabelInput = (props) => {    
     return (
         <InputsContainer row={props.row} half={props.half}>
             <Label big={props.big}> {props.label}</Label>

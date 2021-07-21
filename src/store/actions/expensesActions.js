@@ -6,8 +6,15 @@ export const AddNewExpense=(expenseObj,callback)=>{
     return dispatch =>{
         expenseObj.user=auth.currentUser.uid;
         dispatch({type:ExpensesConstants.CREATE_EXPENSE_REQUEST})
-        expensesDatabase.add(expenseObj).then(()=>{
-            dispatch({type:ExpensesConstants.CREATE_EXPENSE_SUCCESS})
+        expensesDatabase.add(expenseObj).then((doc)=>{
+            expenseObj.id=doc.id
+            console.table('new expense - ',expenseObj)
+            dispatch({
+                type:ExpensesConstants.CREATE_EXPENSE_SUCCESS,
+                payload:{
+                    expense:expenseObj
+                }
+            })
             callback()
         }).catch(error=>{
             dispatch({
@@ -19,14 +26,30 @@ export const AddNewExpense=(expenseObj,callback)=>{
         })
     }
 }
+
 export const GetExpenses=()=>{
     return dispatch=>{
+        dispatch({type:ExpensesConstants.GET_EXPENSES_REQUEST})
         expensesDatabase.where('user','==',auth.currentUser.uid).get().then(querySnapshot=>{
+            const expensesList=[]
             querySnapshot.forEach((doc)=>{
-                console.table(doc.data())
+                const expense=doc.data()
+                expense.id=doc.id
+                expensesList.push(expense)
+            })
+            dispatch({
+                type:ExpensesConstants.GET_EXPENSES_SUCCESS,
+                payload:{
+                    expensesList
+                }
             })
         }).catch(error=>{
-            console.error(error)
+            dispatch({
+                type:ExpensesConstants.GET_EXPENSES_FAILURE,
+                payload:{
+                    error
+                }
+            })
         })
     }
 }

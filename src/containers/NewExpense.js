@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import LabelInput from '../components/UI/LabelInput'
@@ -6,8 +6,9 @@ import Loader from '../components/UI/Loader'
 import { Button } from '../Designs/Buttons'
 import { Texts } from '../Designs/InputsLabels'
 import { Row, Title, FormWrapper, Wrapper, Modal } from '../Designs/UIContainer'
-import { AddNewExpense, GetExpenses } from '../store/actions/expensesActions'
+import { AddNewExpense } from '../store/actions/expensesActions'
 import { categories, expenseTypes } from '../Utilities/categories'
+import { DateTime } from 'luxon'
 
 /**
 * @author
@@ -34,11 +35,7 @@ const NewExpense = (props) => {
     const [amount, setAmount] = useState(0)
     const [type, setType] = useState('expense')
     const [category, setCategory] = useState('food')
-    const [date, setDate] = useState(() => {
-        const D = new Date().toLocaleDateString().split('/')
-        console.log(`${D[2]}-${D[1]}-${D[0]} Date`)
-        return `${D[2]}-${D[1]}-${D[0]}`
-    })
+    const [date, setDate] = useState('')
     const [error, setError] = useState('')
     const [verificaion, setVerificaion] = useState(false)
 
@@ -58,8 +55,7 @@ const NewExpense = (props) => {
         setCategory(event.target.value)
     }
     const handleDate = (event) => {
-        setDate(event.target.date)
-        console.log(date, typeof (date))
+        setDate(event.target.value)
     }
     const handleAuthSubmit = (event) => {
         event.preventDefault()
@@ -76,18 +72,29 @@ const NewExpense = (props) => {
         setError('')
     }
 
+    useEffect(()=>{
+        reset()
+    },[])
 
     const create = () => {
 
         if (title !== '' && parseFloat(amount)) {
             if (parseFloat(amount) > 0) {
+                let newDate
+                if (DateTime.fromISO(date).toFormat('DD') ===DateTime.now().toFormat('DD')) {
+                    const currentTime = DateTime.now().toFormat('HH mm ss').split(' ')
+                    const TodaySeconds = parseInt(currentTime[0]) * 3600 + parseInt(currentTime[1]) * 60 + parseInt(currentTime[2])
+                    newDate = DateTime.fromISO(date).ts + TodaySeconds;
+                } else {
+                    newDate = DateTime.fromISO(date).ts
+                }
                 const expenseObj = {
                     title,
                     description,
                     amount: parseFloat(amount),
                     type,
-                    date,
-                    category
+                    category,
+                    date: newDate,
                 }
                 console.table(expenseObj)
                 dispatch(AddNewExpense(expenseObj, () => {
@@ -97,7 +104,7 @@ const NewExpense = (props) => {
                         setVerificaion(false)
                     }, 2000)
                 }))
-                // dispatch(GetExpenses())
+                reset()
             }
             else {
                 setError('Invalid Amount')

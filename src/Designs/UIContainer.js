@@ -112,7 +112,7 @@ export const FormWrapper = styled.form`
     align-items: center;
     z-index:223;
     @media screen and (min-width:700px){
-        width: 50%;
+        width: ${props=>props.edit?'70%':'50%'};
         padding:10px 20px;
         border: 1px solid ${Colors.blue2};
         box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;

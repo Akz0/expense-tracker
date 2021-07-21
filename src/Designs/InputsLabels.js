@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { keyframes } from "styled-components";
 import { Colors, mobileSize } from "./DesignVariables";
 
 export const Input = styled.input`
@@ -71,8 +70,6 @@ export const TextArea = styled.textarea`
         font-size: ${props=>props.big?'20px':'16px'};
     }
 `
-
-
 export const Label = styled.p`
     padding-left:5px;
     padding-bottom:5px;

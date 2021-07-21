@@ -1,4 +1,4 @@
-import firebaseApp, { auth } from "../../Utilities/firebase"
+import { auth } from "../../Utilities/firebase"
 import { DemoUser } from "../reducers/initialDemoData"
 import { AuthConstants, UserConstants } from "./constants"
 

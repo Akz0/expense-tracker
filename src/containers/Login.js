@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components'
 import LabelInput from '../components/UI/LabelInput';
 import Loader from '../components/UI/Loader';
@@ -67,7 +68,7 @@ const AuthPage = (props) => {
         if(authStatus){
             props.history.push('/home')
         }
-    },[])
+    },[authStatus])
     
     //local States
     const [authAction, setAuthAction] = useState('login')
@@ -162,4 +163,4 @@ const AuthPage = (props) => {
 
 }
 
-export default AuthPage
+export default withRouter(AuthPage)
