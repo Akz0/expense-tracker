@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
 import React, { useEffect } from 'react'
-import { ExpenseItemDate, ExpenseItemPrice, ExpenseItemTitle, ExpensesItem } from '../Designs/Expenses'
+import { useDispatch } from 'react-redux'
+import { ExpenseItemDate, ExpenseItemPrice, ExpenseItemTitle, ExpensesItem } from '../../Designs/Expenses'
+import { SetCurrentExpense } from '../../store/actions/expensesActions'
 
 /**
 * @author
@@ -8,19 +10,22 @@ import { ExpenseItemDate, ExpenseItemPrice, ExpenseItemTitle, ExpensesItem } fro
 **/
 
 const ExpenseItem = (props) => {
-    const {date,title,amount,type}=props.item
-    const key=props.key
+    const dispatch=useDispatch()
+    const {date,title,amount,type,id}=props.item
     const newDate=DateTime.fromMillis(date).toFormat('DD')
-    console.log(newDate)
     useEffect(()=>{
-        console.log('Render Expense Item ',key)
-    },[date,title,amount,type])
+        
+    },[date,title,amount,type,id])
 
     const returnShortTitle=()=>{
-        return title.replace(/(.{30})..+/, "$1…");
+        return title.replace(/(.{25})..+/, "$1…");
+    }
+
+    const setCurrentItem=()=>{
+        dispatch(SetCurrentExpense(props.item))
     }
     return (
-       <ExpensesItem >
+       <ExpensesItem onClick={setCurrentItem}>
            <ExpenseItemDate>{newDate}</ExpenseItemDate>
            <ExpenseItemTitle>{returnShortTitle()}</ExpenseItemTitle>
            <ExpenseItemPrice expense={type==='expense'}>{type==='expense' ? '-':'+'} ₹. {amount}</ExpenseItemPrice>

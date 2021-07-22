@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { ExpensesListContainer } from '../Designs/Expenses'
+import { ExpensesListContainer } from '../../Designs/Expenses'
+import Loader from '../UI/Loader'
 import ExpenseItem from './ExpenseItem'
 
 /**
@@ -17,11 +18,13 @@ const ExpensesList = (props) => {
             })
         }
     }
+    const {loading}=props
     return (
         // <div></div>
 
         <ExpensesListContainer>
-            {renderExpensesList()}
+
+            {loading?<Loader/>:renderExpensesList()}
         </ExpensesListContainer>
 
     )

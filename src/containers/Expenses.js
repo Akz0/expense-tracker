@@ -1,26 +1,34 @@
-import { DateTime } from 'luxon'
 import React, { useEffect, useState } from 'react'
+
+import { DateTime } from 'luxon'
 import { useDispatch, useSelector } from 'react-redux'
-import ExpensesList from '../components/ExpensesList'
+
+import ExpensesList from '../components/Expenses/ExpensesList'
 import LabelInput from '../components/UI/LabelInput'
 import Loader from '../components/UI/Loader'
-import { Button, Button2 } from '../Designs/Buttons'
-import { ExpensesConatiner, ExpensesFormContainer, ExpensesListContainer } from '../Designs/Expenses'
+import { Button2 } from '../Designs/Buttons'
+import { ExpensesConatiner, ExpensesFormContainer } from '../Designs/Expenses'
 import { Texts } from '../Designs/InputsLabels'
 import { Row, Title, FormWrapper, Wrapper, Modal } from '../Designs/UIContainer'
-import { GetExpenses } from '../store/actions/expensesActions'
+import { EditExpense } from '../store/actions/expensesActions'
 import { categories, expenseTypes } from '../Utilities/categories'
+import _ from 'lodash'
+import styled from 'styled-components'
+import { Colors } from '../Designs/DesignVariables'
 
 
 /**
 * @author
 * @function Expenses
 **/
-
+const VerificaionContainer=styled.div`
+    border: 1px solid ${Colors.blue2};
+    padding: 20px 20px;
+    width: auto;
+`
 const Expenses = (props) => {
     const errorStatus = useSelector(state => state.expenses.error)
-    const expensesLoaded=useSelector(state=>state.expenses.expensesLoaded)
-    const currentExpense=useSelector(state=>state.expenses.currentExpense)
+    const currentExpense = useSelector(state => state.expenses.currentExpense)
     const loading = useSelector(state => state.expenses.loading)
     const dispatch = useDispatch()
 
@@ -58,11 +66,11 @@ const Expenses = (props) => {
     }
 
     const reset = () => {
-        if(currentExpense){
-            const newDate=new Date().toLocaleDateString(currentExpense.date).split('/')
+        if (currentExpense) {
+            const newDate = DateTime.fromMillis(currentExpense.date).c
             setTitle(currentExpense.title)
             setAmount(currentExpense.amount)
-            setDate(`${newDate[2]}-${newDate[1]}-${newDate[0]}`)
+            setDate(`${newDate["year"]}-${newDate["month"] < 10 ? '0' : ''}${newDate["month"]}-${newDate["day"]}`)
             setDescription(currentExpense.description)
             setType(currentExpense.type)
             setCategory(currentExpense.category)
@@ -70,31 +78,43 @@ const Expenses = (props) => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         reset()
-    },[currentExpense])
+    }, [currentExpense])
 
     const updateExpense = (event) => {
         event.preventDefault()
         if (title !== '' && parseFloat(amount)) {
+            let newDate
+
+            if (DateTime.fromISO(date).toFormat('DD') === DateTime.now().toFormat('DD')) {
+                const currentTime = DateTime.now().toFormat('HH mm ss').split(' ')
+                const TodaySeconds = parseInt(currentTime[0]) * 3600 + parseInt(currentTime[1]) * 60 + parseInt(currentTime[2])
+                newDate = DateTime.fromISO(date).ts + TodaySeconds;
+            } else {
+                newDate = DateTime.fromISO(date).ts
+            }
             if (parseFloat(amount) > 0) {
                 const expenseObj = {
                     title,
                     description,
                     amount: parseFloat(amount),
                     type,
-                    date,
-                    category
+                    date: newDate,
+                    category,
+                    id: currentExpense.id
                 }
-                console.table(expenseObj)
-                // dispatch(AddNewExpense(expenseObj, () => {
-                //     reset()
-                //     setVerificaion(true)
-                //     setTimeout(() => {
-                //         setVerificaion(false)
-                //     }, 2000)
-                // }))
-                // dispatch(GetExpenses())
+                console.table('Current : ', currentExpense)
+                console.table('New Edited :', expenseObj)
+                dispatch(EditExpense(expenseObj, () => {
+                    reset()
+                    setEdit(false)
+                    setVerificaion(true)
+                    setTimeout(() => {
+                        setVerificaion(false)
+                    }, 2000)
+                }))
+
             }
             else {
                 setError('Invalid Amount')
@@ -111,14 +131,13 @@ const Expenses = (props) => {
     }
 
     const renderVerification = () => {
-        return <Modal>
-            <Row>
+        return <Row>
                 {errorStatus
-                    ? <Texts error>Adding Expense Failed</Texts>
-                    : <Texts safe>Expense Created</Texts>
+                    ? <Texts error>Edit Failed, Please Try Again.</Texts>
+                    : <Texts safe>Edit Successful</Texts>
                 }
             </Row>
-        </Modal>
+        
     }
 
     const renderActions = () => {
@@ -141,41 +160,40 @@ const Expenses = (props) => {
         <ExpensesConatiner>
             <ExpensesFormContainer>
                 <Wrapper>
-                    <FormWrapper edit onSubmit={(event) => handleAuthSubmit(event)}>
-                        <Title></Title>
-                        <Row>
-                            <LabelInput disabled={!Edit} value={title} label='Title' type='text' placeholder='' onChange={handleTitle} />
-                        </Row>
-                        <Row>
-                            <LabelInput disabled={!Edit} value={description} label='Description' type='textarea' placeholder='' onChange={handleDescription} />
-                        </Row>
-                        <Row half input>
-                            <LabelInput disabled={!Edit} value={amount} label='Amount' type='number' placeholder='' onChange={handleAmount} />
-                            <LabelInput disabled={!Edit} value={date} label='Date' type='date' placeholder='' onChange={handleDate} />
-                        </Row>
-                        <Row half input>
-                            <LabelInput disabled={!Edit} value={category} options={categories} label='Category' type='select' placeholder='' onChange={handleCategory} />
-                            <LabelInput disabled={!Edit} value={type} options={expenseTypes} label='Type' type='select' placeholder='' onChange={handleType} />
-                        </Row>
-                        <Row>
-                            {renderActions()}
-                        </Row>
-                        <Texts error>{errorStatus ? error ? error : errorStatus : error}</Texts>
-                    </FormWrapper>
+                    {
+                        loading
+                            ? <Loader />
+                            : verificaion
+                                ? renderVerification()
+                                : <FormWrapper edit onSubmit={(event) => handleAuthSubmit(event)}>
+                                    <Title></Title>
+                                    <Row>
+                                        <LabelInput disabled={!Edit} value={title} label='Title' type='text' placeholder='' onChange={handleTitle} />
+                                    </Row>
+                                    <Row>
+                                        <LabelInput disabled={!Edit} value={description} label='Description' type='textarea' placeholder='' onChange={handleDescription} />
+                                    </Row>
+                                    <Row half input>
+                                        <LabelInput disabled={!Edit} value={amount} label='Amount' type='number' placeholder='' onChange={handleAmount} />
+                                        <LabelInput disabled={!Edit} value={date} label='Date' type='date' placeholder='' onChange={handleDate} />
+                                    </Row>
+                                    <Row half input>
+                                        <LabelInput disabled={!Edit} value={category} options={categories} label='Category' type='select' placeholder='' onChange={handleCategory} />
+                                        <LabelInput disabled={!Edit} value={type} options={expenseTypes} label='Type' type='select' placeholder='' onChange={handleType} />
+                                    </Row>
+                                    <Row>
+                                        {renderActions()}
+                                    </Row>
+                                    <Texts error>{errorStatus ? error ? error : errorStatus : error}</Texts>
+                                </FormWrapper>
+                    }
                 </Wrapper>
             </ExpensesFormContainer>
 
-            <ExpensesList />
+            <ExpensesList loading={loading}/>
         </ExpensesConatiner>
     )
 
 }
 
 export default Expenses
-
-// {loading ? <Loader />
-//     :
-//     verificaion ? renderVerification()
-//         :null
-
-// }

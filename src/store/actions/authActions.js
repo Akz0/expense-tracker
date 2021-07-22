@@ -1,6 +1,6 @@
 import { auth } from "../../Utilities/firebase"
 import { DemoUser } from "../reducers/initialDemoData"
-import { AuthConstants, UserConstants } from "./constants"
+import { AuthConstants, ExpensesConstants, UserConstants } from "./constants"
 
 const loginSuccess = (dispatch, userData) => {
     dispatch({
@@ -42,6 +42,7 @@ export const Logout = () => {
     return dispatch => {
         dispatch({ type: AuthConstants.LOGOUT_REQUEST })
         auth.signOut().then(() => {
+            dispatch({ type:ExpensesConstants.RESET_EXPENSES_REDUCER})
             dispatch({ type: AuthConstants.LOGOUT_SUCCESS })
         }).catch(error => { })
     }

@@ -17,25 +17,21 @@ export const ExpensesListContainer = styled.div`
     align-items: center;
     margin:0vh 0;
     padding: 10px 5px;
-
-    flex-direction: column;
-    max-height: 200px;
-    overflow-y: auto;
-
-    justify-content: flex-start;
     width:100%;
 
-    /* flex-direction:row; */
-    /* justify-content: space-between; */
-    /* max-height: 10vh; */
-    /* overflow-x: scroll; */
+    
+    flex-direction:row; 
+    justify-content: space-between; 
+    max-height: 10vh; 
+    overflow-x: auto;
+    overflow-y: none;
     
 
     border: 1px solid ${Colors.blue2};
     /* width */
     &::-webkit-scrollbar {
-        height: 2px;
-        width: 2px;
+        height: 4px;
+        width: 4px;
     }
 
     /* Track */
@@ -52,12 +48,14 @@ export const ExpensesListContainer = styled.div`
     @media screen and (min-width:${mobileSize}) {
         width:45%;
         min-width: auto;
-        align-items: flex-start;
+        align-items: center;
+        justify-content: flex-start;
         margin: 0;
         height: 530px;
         max-height: 530px;
-        /* flex-direction: column;
-        overflow-y: scroll; */
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: none;
         
     }
 `
@@ -87,14 +85,18 @@ export const ExpensesItem=styled.div`
     border: 1px solid ${Colors.grey};
     padding:5px 10px;
     margin:5px 3px;
-    width: 90%;
-    /* min-width:200px; */
+    min-width:300px;
+    max-width: 300px;
     font-size: 12px;
-
+    :hover{
+        cursor: pointer;
+        border:1px solid ${Colors.red}
+    }
     @media screen and (min-width:${mobileSize}){
         padding:5px 5px;
         margin:5px 0px;
         width:100%;
+        min-width:100%;
         font-size: medium;
     }
     

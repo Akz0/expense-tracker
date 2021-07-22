@@ -53,3 +53,46 @@ export const GetExpenses=()=>{
         })
     }
 }
+
+
+export const SetCurrentExpense=(currentExpense)=>{
+    return dispatch=>{
+        dispatch({
+            type:ExpensesConstants.SET_CURRENT_EXPENSE,
+            payload:{
+                currentExpense
+            }
+        })
+    }
+}
+
+export const EditExpense=(expense,callback)=>{
+    return dispatch=>{
+        dispatch({type:ExpensesConstants.EDIT_EXPENSE_REQUEST})
+        const expenseObj={...expense}
+        delete expenseObj['id']
+        expensesDatabase.doc(expense.id).update(expenseObj).then(()=>{
+            console.log('Updated Item :',expense.id)
+            dispatch({
+                type:ExpensesConstants.EDIT_EXPENSE_SUCCESS,
+                payload:{
+                    newExpense:expense
+                }
+            })
+            callback()
+        })
+        .catch((error)=>{
+            dispatch({
+                type:ExpensesConstants.EDIT_EXPENSE_FAILURE,
+                payload:{
+                    error
+                }
+            })
+        })
+        
+        
+    }
+}
+
+
+

@@ -1,8 +1,8 @@
 import React from 'react'
-import { Button } from '../Designs/Buttons'
-import { Texts } from '../Designs/InputsLabels'
-import { FormWrapper, Row, Title, Wrapper } from '../Designs/UIContainer'
-import LabelInput from './UI/LabelInput'
+import { Button } from '../../Designs/Buttons'
+import { Texts } from '../../Designs/InputsLabels'
+import { FormWrapper, Row, Title, Wrapper } from '../../Designs/UIContainer'
+import LabelInput from '../UI/LabelInput'
 
 /**
 * @author
