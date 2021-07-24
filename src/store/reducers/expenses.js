@@ -114,6 +114,7 @@ const ExpensesReducer = (state = initState, action) => {
             break
         case ExpensesConstants.RESET_EXPENSES_REDUCER:
             state={...initState}
+            break;
         default: return state;
     }
     return state;

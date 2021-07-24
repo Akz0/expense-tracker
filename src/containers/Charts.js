@@ -6,8 +6,9 @@ import React from 'react'
 **/
 
 const Charts = (props) => {
+
     return (
-        <div>Charts</div>
+        <div>Coming Soon !</div>
     )
 
 }

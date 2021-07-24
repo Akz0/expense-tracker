@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Colors, mobileSize } from "./DesignVariables";
+import { Colors, Fonts, mobileSize } from "./DesignVariables";
 
 export const Input = styled.input`
     width:100%;
@@ -99,10 +99,40 @@ export const InputsContainer=styled.div`
     flex-direction: ${props=>props.row?'row':'column'};
     justify-content: ${props=>props.row?'space-between':'center'};
     align-items: ${props=>props.row?'center':'flex-start'};
-    width:100%;
+    width:${props=>props.width?props.width:'100%'};
     padding:5px 5px;
+    border:${props=>props.border?'1px solid white':'none'};
     @media screen and (min-width:${mobileSize}){
         padding:0 10px;
         width:${props=>props.half?'50%':'100%'};
     }
 `;
+
+export const Key=styled.div`
+    font-size: 12px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color:${Colors.grey};
+    width:50%;
+    padding:px 5px;
+    @media screen and (min-width:${mobileSize}){
+        padding:0 10px;
+        font-size: 14px;
+    }
+`
+export const Value=styled.div`
+    font-size: 16px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color:${props=>props.red?Colors.red:props.green?Colors.green:Colors.white};
+    width:50%;
+    padding:0px 20px;
+    font-weight: bold;
+    font-family:${Fonts.robotoSlab};
+    @media screen and (min-width:${mobileSize}){
+        padding:0 10px;
+        font-size: 20px;
+    }
+`

@@ -81,6 +81,7 @@ export const Title = styled.p`
     font-weight: bold;
     font-size: 20px;
     text-decoration: none;
+    margin: ${props=>props.margin?'20px 0':'0'};
     @media screen and (min-width: ${mobileSize}) {
         font-size: 35px;
     }

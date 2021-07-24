@@ -44,6 +44,7 @@ export const NavItem = styled(NavLink)`
     text-decoration: none;
     opacity:${props => props.opacity ? `${props.opacity}` : 1};
 
+    border: ${props=>props.border?`1px solid ${Colors.red}`:'none'};
     :hover{
         color:${Colors.red};
     }

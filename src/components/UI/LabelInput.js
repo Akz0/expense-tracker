@@ -7,6 +7,9 @@ import { Input, InputsContainer, Label, Option, Select, TextArea } from '../../D
 **/
 
 const LabelInput = (props) => {    
+    useEffect(()=>{
+
+    },[props.label,props.value,props.disabled])
     return (
         <InputsContainer row={props.row} half={props.half}>
             <Label big={props.big}> {props.label}</Label>

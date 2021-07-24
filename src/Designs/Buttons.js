@@ -42,7 +42,7 @@ export const Button2= styled.button`
 
     :hover{
         color:${props=>props.danger?Colors.red:props.safe?Colors.white:Colors.yellow};
-        border: 1px solid ${props=>props.danger?Colors.red:props.safe?Colors.green:Colors.yellow}; 
+        border: 1px solid ${props=>props.danger || props.red ?Colors.red:props.safe?Colors.green:Colors.yellow}; 
         background-color: ${props=>props.safe?Colors.green:'transparent'};
         opacity: 1;
         cursor: pointer;

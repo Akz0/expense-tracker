@@ -24,7 +24,7 @@ export const categories=[
         name:'Clothing'
     },
     {
-        value:'utilities-repairs',
+        value:'utilities_repairs',
         name:'Utilities And Repairs'
     },
     {
@@ -51,6 +51,15 @@ export const expenseTypes=[
         name:'Income'
     }
 ]
+
+
+export function GetCategoryName(nameKey){
+    for (var i=0; i < categories.length; i++) {
+        if (categories[i].value === nameKey) {
+            return categories[i].name;
+        }
+    }
+}
 
 // {
 //     title:'',

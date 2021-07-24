@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import LabelInput from '../components/UI/LabelInput';
 import Loader from '../components/UI/Loader';
@@ -16,13 +17,20 @@ import EmailCheck from '../Utilities/email';
 **/
 
 
-
+const SettingsContainer=styled.div`
+    display:flex ;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+`
 
 const Settings = (props) => {
 
     const errorStatus = useSelector(state => state.auth.editError)
     const loading = useSelector(state => state.auth.loading)
     const user = useSelector(state => state.auth.user)
+    const isDemo=useSelector(state=>state.auth.isDemo)
     const dispatch = useDispatch()
 
     //local States
@@ -122,7 +130,7 @@ const Settings = (props) => {
     const renderActions = () => {
         let item = <Row half>
             <Button2 type="button" onClick={(event) => { setEdit(true); event.preventDefault() }}>Edit Profile</Button2>
-            <Button2 type="button" danger opacity='0.5' onClick={(event) => {
+            <Button2 disabled={isDemo} type="button" danger opacity='0.5' onClick={(event) => {
                 event.preventDefault()
                 setVerification(true)
                 setAction('delete')
@@ -173,7 +181,7 @@ const Settings = (props) => {
 
 
     return (
-        <>
+        <SettingsContainer>
             {loading ? <Loader />
                 :
                 <Wrapper>
@@ -184,11 +192,11 @@ const Settings = (props) => {
                                 <LabelInput disabled={!Edit} value={name} label='Name' type='text' onChange={(event) => handleName(event)} />
                             </Row>
                             <Row>
-                                <LabelInput disabled={!Edit} value={email} label='Email' type='email' onChange={(event) => handleEmail(event)} />
+                                <LabelInput disabled={!Edit || isDemo} value={email} label='Email' type='email' onChange={(event) => handleEmail(event)} />
                             </Row>
                             <Row half>
                                 <span>Pasasword</span>
-                                <Button2 onClick={(event) => {
+                                <Button2 disabled={isDemo} onClick={(event) => {
                                     event.preventDefault()
                                     setError('')
                                     setVerification(true)
@@ -199,13 +207,14 @@ const Settings = (props) => {
                             <Texts animation error>{errorStatus ? error ? error : errorStatus : error}</Texts>
                             {renderActions()}
                             <Texts animation safe>{message ? message : null}</Texts>
+                            {isDemo?<Texts>*As this is a demo, you may only edit the Name*</Texts>:''}
                         </UiContainer>
                     </Container>
                     {verification ? verificationModal() : null}
                 </Wrapper>
             }
 
-        </>
+        </SettingsContainer>
     )
 
 }

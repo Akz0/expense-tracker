@@ -1,11 +1,11 @@
 import { auth } from "../../Utilities/firebase"
-import { DemoUser } from "../reducers/initialDemoData"
-import { AuthConstants, ExpensesConstants, UserConstants } from "./constants"
+import { AuthConstants, ExpensesConstants, GeneralDataConstants, UserConstants } from "./constants"
 
-const loginSuccess = (dispatch, userData) => {
+const loginSuccess = (dispatch, userData,isDemo=false) => {
     dispatch({
         type: AuthConstants.LOGIN_SUCCESS,
         payload: {
+            isDemo:isDemo,
             user: {
                 name: userData.user.displayName,
                 email: userData.user.email,
@@ -43,8 +43,11 @@ export const Logout = () => {
         dispatch({ type: AuthConstants.LOGOUT_REQUEST })
         auth.signOut().then(() => {
             dispatch({ type:ExpensesConstants.RESET_EXPENSES_REDUCER})
+            dispatch({type:GeneralDataConstants.CLEAR_DATA})
             dispatch({ type: AuthConstants.LOGOUT_SUCCESS })
-        }).catch(error => { })
+        }).catch(error => {
+            dispatch({type:AuthConstants.LOGOUT_FAILURE,payload:{error}})
+         })
     }
 }
 
@@ -83,15 +86,14 @@ export const SignUp = (email, password) => {
     }
 }
 
-export const DemoAuth = () => {
+export const DemoAuth = (email="johndoe@xyz.com",password="brucewayne") => {
     console.log('Demo Login')
     return dispatch => {
         dispatch({ type: AuthConstants.LOGIN_REQUEST })
-        dispatch({
-            type: AuthConstants.LOGIN_SUCCESS,
-            payload: {
-                user: DemoUser
-            }
+        auth.signInWithEmailAndPassword(email, password).then(userData => {
+            loginSuccess(dispatch, userData,true)
+        }).catch(error => {
+            loginFailure(dispatch,error.code)
         })
     }
 }

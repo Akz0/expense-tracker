@@ -5,6 +5,7 @@ const initState = {
     loading: false,
     error: null,
     user: null,
+    isDemo:false,
     editError:null,
 }
 
@@ -22,6 +23,7 @@ const AuthReducer = (state = initState, action) => {
                 ...state,
                 authenticated: true,
                 loading: false,
+                isDemo:action.payload.isDemo,
                 user: action.payload.user,
                 error: null
             }
@@ -47,6 +49,7 @@ const AuthReducer = (state = initState, action) => {
             state = {
                 ...state,
                 authenticated: false,
+                isDemo:false,
                 loading: false,
                 user: null
             }

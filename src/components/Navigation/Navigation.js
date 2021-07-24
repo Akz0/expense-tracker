@@ -25,7 +25,7 @@ const Navigation = (props) => {
         setRender(true)
     }
     useEffect(()=>{
-        console.log('rerender of Navigation Menu Occurred')
+        
     },[reRender])
 
     return (

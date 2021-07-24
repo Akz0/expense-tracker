@@ -29,7 +29,7 @@ const TopBar = (props) => {
     }
 
     useEffect(()=>{
-        console.log('rerender of Top Bar Occurred')
+        
     },[])
 
     return (

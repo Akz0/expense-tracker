@@ -1,5 +1,6 @@
 import { auth, expensesDatabase } from "../../Utilities/firebase"
 import { ExpensesConstants } from "./constants"
+import { AddNewExpenseGeneralData, SetInitialGeneralData } from "./generalData";
 
 
 export const AddNewExpense=(expenseObj,callback)=>{
@@ -15,6 +16,7 @@ export const AddNewExpense=(expenseObj,callback)=>{
                     expense:expenseObj
                 }
             })
+            dispatch(AddNewExpenseGeneralData(expenseObj))
             callback()
         }).catch(error=>{
             dispatch({
@@ -43,6 +45,7 @@ export const GetExpenses=()=>{
                     expensesList
                 }
             })
+            dispatch(SetInitialGeneralData(expensesList))
         }).catch(error=>{
             dispatch({
                 type:ExpensesConstants.GET_EXPENSES_FAILURE,
