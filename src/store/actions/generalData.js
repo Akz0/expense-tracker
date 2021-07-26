@@ -23,3 +23,25 @@ export const AddNewExpenseGeneralData=(newExpense)=>{
         })
     }
 }
+
+export const EditExpenseGeneralData=(expensesList)=>{
+    return dispatch=>{
+        dispatch({type:GeneralDataConstants.CALCULATE_REQUEST})
+        dispatch({
+            type:GeneralDataConstants.EDITED_EXPENSE,
+            payload:{
+                expensesList
+            }
+        })
+    }
+}
+
+
+export const SetInitialGeneralDataEmpty=()=>{
+    return dispatch=>{
+        dispatch({type:GeneralDataConstants.CALCULATE_REQUEST})
+        dispatch({
+            type:GeneralDataConstants.INITIAL_CALCULATE_DATA_EMPTY,
+        })
+    }
+}

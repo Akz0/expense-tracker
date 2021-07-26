@@ -14,13 +14,12 @@ const ExpensesList = (props) => {
     const renderExpensesList = () => {
         if (expensesList) {
             return expensesList.map((item, index) => {
-                return <ExpenseItem key={item.id} item={item} />
+                return <ExpenseItem key={index} item={item} />
             })
         }
     }
     const {loading}=props
     return (
-        // <div></div>
 
         <ExpensesListContainer>
 

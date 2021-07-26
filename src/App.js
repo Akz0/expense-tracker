@@ -16,7 +16,6 @@ import { MainContainer, ContentWrapper } from './Designs/MainContainer';
 function App() {
     const authStatus = useSelector(state => state.auth.authenticated)
 
-
     const render = () => {
         if (authStatus) {
             return (

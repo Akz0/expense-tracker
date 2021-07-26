@@ -15,7 +15,7 @@ const ExpenseItem = (props) => {
     const newDate=DateTime.fromMillis(date).toFormat('DD')
     useEffect(()=>{
         
-    },[date,title,amount,type,id])
+    },[date,title,amount])
 
     const returnShortTitle=()=>{
         return title.replace(/(.{25})..+/, "$1…");
@@ -25,7 +25,7 @@ const ExpenseItem = (props) => {
         dispatch(SetCurrentExpense(props.item))
     }
     return (
-       <ExpensesItem onClick={setCurrentItem}>
+       <ExpensesItem style={{pointerEvents:props.disabled?'none':'auto'}}onClick={setCurrentItem}>
            <ExpenseItemDate>{newDate}</ExpenseItemDate>
            <ExpenseItemTitle>{returnShortTitle()}</ExpenseItemTitle>
            <ExpenseItemPrice expense={type==='expense'}>{type==='expense' ? '-':'+'} ₹. {amount}</ExpenseItemPrice>

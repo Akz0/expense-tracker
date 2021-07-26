@@ -9,17 +9,9 @@ const initState = {
     editError: null,
 }
 
-
-const sortByDate = (state, action) => {
-    state = {
-        ...state,
-        expensesLoaded: true,
-        loading: false,
-        error: null,
-    }
-
+const sortByDate=(expensesList)=>{
     let expenseItem
-    let updatedExpensesList = action.payload.expensesList;
+    let updatedExpensesList = [...expensesList];
     let numberOfExpenses = updatedExpensesList.length
     for (let i = 0; i < numberOfExpenses; i++) {
         for (let j = 0; j < numberOfExpenses - i - 1; j++) {
@@ -30,6 +22,17 @@ const sortByDate = (state, action) => {
             }
         }
     }
+    return updatedExpensesList
+}
+
+const initialExepenses = (state, action) => {
+    state = {
+        ...state,
+        expensesLoaded: true,
+        loading: false,
+        error: null,
+    }
+    const updatedExpensesList=sortByDate(action.payload.expensesList)
     state.expensesList = updatedExpensesList
     state.currentExpense = updatedExpensesList[0]
 
@@ -48,21 +51,33 @@ const editSuccessful = (state, action) => {
     const oldExpenseIndex = newExpensesList.findIndex(item => item.id === newExpense.id)
     if (oldExpenseIndex > -1) {
         newExpensesList[oldExpenseIndex] = newExpense
-        
+        const updatedList=sortByDate(newExpensesList)
         state = {
             ...state,
-            expensesList: newExpensesList,
+            expensesList: updatedList,
+            currentExpense:updatedList[0],
             loading: false,
             editError: null,
         }
-        if(oldExpenseIndex ===0){
-            state.currentExpense=newExpense
-        }
     }
+    
     
     return state
 }
 
+const addExpense=(state,action)=>{
+    const updatedExpensesList=sortByDate([...state.expensesList, action.payload.expense])
+    const updatedCurrentExpense=updatedExpensesList[0]
+
+    const updatedState={
+        ...state,
+        expensesList:updatedExpensesList ,
+        currentExpense:updatedCurrentExpense,
+        loading: false,
+        error: null,
+    }
+    return updatedState
+}
 const ExpensesReducer = (state = initState, action) => {
     switch (action.type) {
         case ExpensesConstants.CREATE_EXPENSE_REQUEST:
@@ -95,16 +110,21 @@ const ExpensesReducer = (state = initState, action) => {
 
         //Add;
         case ExpensesConstants.CREATE_EXPENSE_SUCCESS:
-            state = {
-                ...state,
-                expensesList: [...state.expensesList, action.payload.expense],
-                loading: false,
-                error: null,
-            }
+            state = addExpense(state,action)
             break;
         //Get
         case ExpensesConstants.GET_EXPENSES_SUCCESS:
-            state = sortByDate(state, action)
+            state = initialExepenses(state, action)
+            break;
+        case ExpensesConstants.GET_EXPENSES_SUCCESS_EMPTY:
+            state={
+                expensesList: [],
+                currentExpense: null,
+                expensesLoaded: true,
+                error: null,
+                loading: false,
+                editError: null,
+            }
             break;
         case ExpensesConstants.SET_CURRENT_EXPENSE:
             state = {

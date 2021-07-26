@@ -119,3 +119,18 @@ export const FormWrapper = styled.form`
         box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     }
 `
+
+export const DataItemContainer=styled.div`
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    align-items: center;
+    width:100%;
+    padding:5px 5px;
+    margin:5px 0;
+    border:${props=>props.border?'1px solid white':'none'};
+    @media screen and (min-width:${mobileSize}){
+        padding:0 10px;
+        margin:20px 0;
+    }
+`

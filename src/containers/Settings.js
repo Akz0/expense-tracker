@@ -8,7 +8,7 @@ import Loader from '../components/UI/Loader';
 import { Button2 } from '../Designs/Buttons';
 import { Texts } from '../Designs/InputsLabels';
 import { Modal, Row, UiContainer ,Title,Wrapper,Container} from '../Designs/UIContainer';
-import { DeleteUser, UpdateUserPassword, UpdateUserProfile } from '../store/actions';
+import { DeleteUser, UpdateDemoUserProfile, UpdateUserPassword, UpdateUserProfile } from '../store/actions';
 import EmailCheck from '../Utilities/email';
 
 /**
@@ -56,8 +56,9 @@ const Settings = (props) => {
 
     const updateUser = (event) => {
         event.preventDefault()
+        
         if (email === user.email && name === user.name) {
-            console.log('No Change in Name and Email')
+            // console.log('No Change in Name and Email')
             setEdit(false)
             setError('')
             return
@@ -66,12 +67,20 @@ const Settings = (props) => {
                 setError('Invlaid Email')
                 return
             } else {
-                console.log('Email-', email, typeof (email))
-                console.log('Name-', name, typeof (name))
-                console.log('Change in Name and Email')
+                if(isDemo){
+                    dispatch(UpdateDemoUserProfile(email, name,() => {
+                        setEdit(false)
+                        setMessage('Profile Updated Successfully!')
+                        setTimeout(() => {
+                            setMessage('')
+                        }, 3000)
+                    }))
+                    return
+                }
                 setEdit(false)
                 setError('')
                 dispatch(UpdateUserProfile(email, name, () => {
+                    setEdit(false)
                     setMessage('Profile Updated Successfully!')
                     setTimeout(() => {
                         setMessage('')

@@ -1,14 +1,12 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import Icon from '@iconify/react'
+import {  useSelector } from 'react-redux'
 import { DateTime } from 'luxon'
-import pencilIcon from '@iconify/icons-mdi-light/pencil';
 import { FullContanier, HalfContainer } from '../Designs/Charts'
-import { NavItem, NavItemTitle } from '../Designs/Navigation'
 import { Title } from '../Designs/UIContainer'
-import { BasicReducerConstants } from '../store/actions/constants'
 import DataItem from './UI/DataItem';
 import Loader from './UI/Loader';
+import { InputsContainer, Label } from '../Designs/InputsLabels';
+import ExpenseItem from './Expenses/ExpenseItem';
 
 /**
 * @author
@@ -17,10 +15,8 @@ import Loader from './UI/Loader';
 
 const CurrentMonthDetails = (props) => {
     const date = DateTime.now()
-    const dispatch = useDispatch()
-    const closeSideBar = () => {
-        dispatch({ type: BasicReducerConstants.CLOSE_SIDEBAR })
-    }
+    const expensesList = useSelector(state => state.expenses.expensesList)
+    const item = expensesList[0]
     const D = useSelector(state => state.generalData.currentMonthData)
 
     const currentMonthData = { ...D }
@@ -28,11 +24,17 @@ const CurrentMonthDetails = (props) => {
     const expensesLoading = useSelector(state => state.expenses.loading)
 
     const renderData = () => {
+
         if (currentMonthData.highestExpenseCategory) {
-            return <FullContanier  sub>
+            return <FullContanier start sub>
                 <DataItem label="Total Expense" value={'₹. ' + currentMonthData.total} green />
                 <DataItem label="Highest Expense Category " value={currentMonthData.highestExpenseCategory.category} />
                 <DataItem label={"Total Spent on " + currentMonthData.highestExpenseCategory.category} value={'₹. ' + currentMonthData.highestExpenseCategory.amount} red />
+                {item ? <InputsContainer marginTop center>
+                    <Label>Latest Expense</Label>
+                    <ExpenseItem disabled key={item.id} item={item} />
+                </InputsContainer> : ''}
+                
             </FullContanier>
         }
     }
@@ -42,6 +44,7 @@ const CurrentMonthDetails = (props) => {
             : <HalfContainer>
                 <Title>{date.toFormat('LLLL') + ' , ' + date.toFormat('y')}</Title>
                 {renderData()}
+
             </HalfContainer>
     )
 

@@ -9,6 +9,8 @@ import { Row, Title, FormWrapper, Wrapper, Modal } from '../Designs/UIContainer'
 import { AddNewExpense } from '../store/actions/expensesActions'
 import { categories, expenseTypes } from '../Utilities/categories'
 import { DateTime } from 'luxon'
+import { ExpensesConstants } from '../store/actions/constants'
+import { AddNewExpenseGeneralData } from '../store/actions'
 
 /**
 * @author
@@ -27,6 +29,8 @@ const NewExpense = (props) => {
 
     const errorStatus = useSelector(state => state.expenses.error)
     const loading = useSelector(state => state.expenses.loading)
+    const isDemo=useSelector(state=>state.auth.isDemo)
+
     const dispatch = useDispatch()
 
     //local states
@@ -68,7 +72,7 @@ const NewExpense = (props) => {
         setDate(`${D[2]}-${D[1]}-${D[0]}`)
         setDescription('')
         setType('expense')
-        setCategory('Food')
+        setCategory('food')
         setError('')
     }
 
@@ -96,7 +100,24 @@ const NewExpense = (props) => {
                     category,
                     date: newDate,
                 }
-                console.table(expenseObj)
+                //If Demo
+                if(isDemo){
+                    console.log('Demo New Expense Added')
+                    dispatch({
+                        type:ExpensesConstants.CREATE_EXPENSE_SUCCESS,
+                        payload:{
+                            expense:expenseObj
+                        }
+                    })
+                    dispatch(AddNewExpenseGeneralData(expenseObj))
+                    reset()
+                    setVerificaion(true)
+                    setTimeout(() => {
+                        setVerificaion(false)
+                    }, 2000)
+                    return 
+                }
+                //for Others
                 dispatch(AddNewExpense(expenseObj, () => {
                     reset()
                     setVerificaion(true)

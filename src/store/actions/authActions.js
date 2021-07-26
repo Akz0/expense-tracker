@@ -1,4 +1,4 @@
-import { auth } from "../../Utilities/firebase"
+import { auth, expensesDatabase } from "../../Utilities/firebase"
 import { AuthConstants, ExpensesConstants, GeneralDataConstants, UserConstants } from "./constants"
 
 const loginSuccess = (dispatch, userData,isDemo=false) => {
@@ -143,9 +143,27 @@ export const UpdateUserProfile=(email,name,Callback)=>{
             updateSuccesfull(dispatch)
             Callback()
         }).catch(error=>{
-            console.log(error)
+            // console.log(error)
             updateFailed(dispatch,error.code)
         })
+    }
+}
+
+export const UpdateDemoUserProfile=(email,name,Callback)=>{
+    return dispatch=>{
+        dispatch({type:UserConstants.EDIT_REQUEST})
+        dispatch({
+            type:UserConstants.EDIT_SUCCESS,
+            payload:{
+                user:{
+                    name:name,
+                    email:email,
+                    uid:auth.currentUser.uid
+                }
+            }
+        })
+        Callback()
+        
     }
 }
 
@@ -158,8 +176,18 @@ export const UpdateUserPassword=(password)=>{
 export const DeleteUser=(password,Callback)=>{
     
     return dispatch=>{
-        auth.currentUser.delete()
-        .then(()=>{
+        expensesDatabase.where('user', '==', auth.currentUser.uid).get().then((querySnapshot)=>{
+            const expensesList=[]
+            querySnapshot.forEach((doc) => {
+                expensesList.push(doc.id)
+            })
+            expensesList.forEach(item=>{
+                expensesDatabase.doc(item).delete()
+            })
+            console.log('Deleted Expenses Items')
+            return auth.currentUser.delete() 
+        }).then(()=>{
+            console.log('Deleted Account')
             Callback(Logout)
         })
         .catch(error=>{

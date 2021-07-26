@@ -9,26 +9,23 @@ import Loader from '../components/UI/Loader'
 import { Button2 } from '../Designs/Buttons'
 import { ExpensesConatiner, ExpensesFormContainer } from '../Designs/Expenses'
 import { Texts } from '../Designs/InputsLabels'
-import { Row, Title, FormWrapper, Wrapper, Modal } from '../Designs/UIContainer'
+import { Row, Title, FormWrapper, Wrapper } from '../Designs/UIContainer'
 import { EditExpense } from '../store/actions/expensesActions'
 import { categories, expenseTypes } from '../Utilities/categories'
-import _ from 'lodash'
-import styled from 'styled-components'
-import { Colors } from '../Designs/DesignVariables'
+import { EditExpenseGeneralData } from '../store/actions'
+import { ExpensesConstants } from '../store/actions/constants'
 
 
 /**
 * @author
 * @function Expenses
 **/
-const VerificaionContainer=styled.div`
-    border: 1px solid ${Colors.blue2};
-    padding: 20px 20px;
-    width: auto;
-`
+
 const Expenses = (props) => {
     const errorStatus = useSelector(state => state.expenses.error)
     const currentExpense = useSelector(state => state.expenses.currentExpense)
+    const expensesList=useSelector(state=>state.expenses.expensesList)
+    const isDemo=useSelector(state=>state.auth.isDemo)
     const loading = useSelector(state => state.expenses.loading)
     const dispatch = useDispatch()
 
@@ -104,8 +101,23 @@ const Expenses = (props) => {
                     category,
                     id: currentExpense.id
                 }
-                console.table('Current : ', currentExpense)
-                console.table('New Edited :', expenseObj)
+                if(isDemo){
+                    console.log('Demo Expense Edited')
+                    dispatch({
+                        type:ExpensesConstants.EDIT_EXPENSE_SUCCESS,
+                        payload:{
+                            newExpense:expenseObj
+                        }
+                    })
+                    reset()
+                    setEdit(false)
+                    setVerificaion(true)
+                    setTimeout(() => {
+                        setVerificaion(false)
+                    }, 2000)
+                    dispatch(EditExpenseGeneralData(expensesList))
+                    return
+                }
                 dispatch(EditExpense(expenseObj, () => {
                     reset()
                     setEdit(false)
@@ -113,6 +125,7 @@ const Expenses = (props) => {
                     setTimeout(() => {
                         setVerificaion(false)
                     }, 2000)
+                    dispatch(EditExpenseGeneralData(expensesList))
                 }))
 
             }

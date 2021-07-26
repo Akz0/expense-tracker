@@ -1,5 +1,6 @@
 import React from 'react'
-import { InputsContainer, Key, Value } from '../../Designs/InputsLabels'
+import { Key, Value } from '../../Designs/InputsLabels'
+import { DataItemContainer } from '../../Designs/UIContainer'
 
 /**
 * @author
@@ -8,10 +9,10 @@ import { InputsContainer, Key, Value } from '../../Designs/InputsLabels'
 
 const DataItem = (props) => {
     return (
-        <InputsContainer row>
+        <DataItemContainer row style={{margin:'20px 0'}}>
             <Key>{props.label}</Key>
             <Value red={props.red} green={props.green}>{props.value}</Value>
-        </InputsContainer>
+        </DataItemContainer>
     )
 
 }

@@ -98,9 +98,10 @@ export const InputsContainer=styled.div`
     display: flex;
     flex-direction: ${props=>props.row?'row':'column'};
     justify-content: ${props=>props.row?'space-between':'center'};
-    align-items: ${props=>props.row?'center':'flex-start'};
+    align-items: ${props=>props.row || props.center?'center':'flex-start'};
     width:${props=>props.width?props.width:'100%'};
     padding:5px 5px;
+    margin-top: ${props=>props.marginTop?'20px':'0'};
     border:${props=>props.border?'1px solid white':'none'};
     @media screen and (min-width:${mobileSize}){
         padding:0 10px;

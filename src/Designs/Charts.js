@@ -21,16 +21,14 @@ export const FullContanier=styled.div`
     width: ${props=>props.sub?'98%':'100%'};
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: ${props=>props.start?'flex-start':'center'};
     align-items: center;
-    height: 100%;
     flex-wrap: wrap;
+    height: 100%;
     border:${props=>props.border?'1px solid white':''};    
+
     @media screen and (min-width:${mobileSize}){
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        
+        justify-content: ${props=>props.start?'flex-start':'space-around'};
     }
  
 `

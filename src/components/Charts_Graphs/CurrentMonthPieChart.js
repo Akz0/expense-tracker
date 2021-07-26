@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import ReactApexChart from 'react-apexcharts'
 import { HalfContainer } from '../../Designs/Charts';
-import { Colors } from '../../Designs/DesignVariables';
 /**
 * @author
 * @function CurrentMonthPieChart
@@ -94,7 +93,7 @@ const CurrentMonthPieChart = (props) => {
         },
         legend: {
             width: 400,
-            offsetX: 30,
+            offsetX: 0,
             horizontalAlign: `center`,
             labels: {
                 useSeriesColors: true,
@@ -102,13 +101,13 @@ const CurrentMonthPieChart = (props) => {
             fontSize: '10px',
             position: 'bottom',
         },
-        // colors: [...Object.values(colors)],
-        theme: {
-            monochrome: {
-                enabled: true,
-                color:Colors.red
-            }
-        },
+        colors: [...Object.values(colors)],
+        // theme: {
+        //     monochrome: {
+        //         enabled: true,
+        //         color:Colors.red
+        //     }
+        // },
         stroke: {
             show: true,
             width: 1,
@@ -117,17 +116,17 @@ const CurrentMonthPieChart = (props) => {
             breakpoint: 770,
             options: {
                 chart: {
-                    width: 400
+                    width: 340
                 },
                 legend: {
-                    offsetX: -20,
+                    offsetX: -50,
                 }
             }
         }]
     }
     return (
         <HalfContainer center>
-            <ReactApexChart options={options} series={series} type="pie" width={'500px'} />
+            <ReactApexChart options={options} series={series} type="pie" width={'450px'} />
         </HalfContainer>
     )
 
