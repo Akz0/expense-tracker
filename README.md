@@ -1,10 +1,7 @@
-# Getting Started with Create React App
+# Expenses Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
-
-In the project directory, you can run:
+A simple expenses recording application in which you can :
 
 ### `npm start`
 
