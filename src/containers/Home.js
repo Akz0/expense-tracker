@@ -5,6 +5,7 @@ import CurrentMonthPieChart from '../components/Charts_Graphs/CurrentMonthPieCha
 import { GetExpenses } from '../store/actions/expensesActions'
 import {mobileSize} from '../Designs/DesignVariables'
 import CurrentMonthDetails from '../components/CurrentMonthDetails'
+import { withRouter } from 'react-router-dom'
 /**
 * @author
 * @function Home
@@ -32,11 +33,19 @@ const Home = (props) => {
     const expensesLoaded = useSelector(state => state.expenses.expensesLoaded)
     const isDemo=useSelector(state=>state.auth.isDemo)
 
+    const isAuth=useSelector(state => state.auth.authenticated)
+    useEffect(()=>{
+        if(!isAuth){
+            props.history.push('/')   
+        }
+    })
+
     useEffect(() => {
         if(!expensesLoaded){
             dispatch(GetExpenses(isDemo))
         }
     },[])
+    
     return (
         <HomeConatiner>
             <CurrentMonthDetails />
@@ -46,4 +55,4 @@ const Home = (props) => {
 
 }
 
-export default Home
+export default withRouter(Home)

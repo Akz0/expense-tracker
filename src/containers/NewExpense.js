@@ -11,6 +11,7 @@ import { categories, expenseTypes } from '../Utilities/categories'
 import { DateTime } from 'luxon'
 import { ExpensesConstants } from '../store/actions/constants'
 import { AddNewExpenseGeneralData } from '../store/actions'
+import { withRouter } from 'react-router-dom'
 
 /**
 * @author
@@ -32,6 +33,13 @@ const NewExpense = (props) => {
     const isDemo=useSelector(state=>state.auth.isDemo)
 
     const dispatch = useDispatch()
+
+    const isAuth=useSelector(state => state.auth.authenticated)
+    useEffect(()=>{
+        if(!isAuth){
+            props.history.push('/')   
+        }
+    })
 
     //local states
     const [title, setTitle] = useState('')
@@ -186,4 +194,4 @@ const NewExpense = (props) => {
     )
 }
 
-export default NewExpense
+export default  withRouter(NewExpense) 

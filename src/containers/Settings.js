@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {withRouter} from 'react-router-dom'
 import styled from 'styled-components';
 
 import LabelInput from '../components/UI/LabelInput';
@@ -33,6 +34,13 @@ const Settings = (props) => {
     const isDemo=useSelector(state=>state.auth.isDemo)
     const dispatch = useDispatch()
 
+    const isAuth=useSelector(state => state.auth.authenticated)
+    useEffect(()=>{
+        if(!isAuth){
+            props.history.push('/')   
+        }
+    })
+    
     //local States
     const [name, setName] = useState(user.name)
     const [email, setEmail] = useState(user.email)
@@ -43,7 +51,7 @@ const Settings = (props) => {
     const [action, setAction] = useState('')
     const [confirm, setConfirm] = useState(false)
     const [message, setMessage] = useState('')
-
+    
     const handlePassword = (event) => {
         setPassword(event.target.value)
     }
@@ -228,4 +236,4 @@ const Settings = (props) => {
 
 }
 
-export default Settings
+export default withRouter(Settings) 

@@ -14,6 +14,7 @@ import { EditExpense } from '../store/actions/expensesActions'
 import { categories, expenseTypes } from '../Utilities/categories'
 import { EditExpenseGeneralData } from '../store/actions'
 import { ExpensesConstants } from '../store/actions/constants'
+import { withRouter } from 'react-router-dom'
 
 
 /**
@@ -28,6 +29,13 @@ const Expenses = (props) => {
     const isDemo=useSelector(state=>state.auth.isDemo)
     const loading = useSelector(state => state.expenses.loading)
     const dispatch = useDispatch()
+
+    const isAuth=useSelector(state => state.auth.authenticated)
+    useEffect(()=>{
+        if(!isAuth){
+            props.history.push('/')   
+        }
+    })
 
     //local states
     const [title, setTitle] = useState('')
@@ -209,4 +217,4 @@ const Expenses = (props) => {
 
 }
 
-export default Expenses
+export default withRouter(Expenses)
