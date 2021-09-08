@@ -14,8 +14,10 @@ A simple expenses recording application in which you can :
 - styled-components
 - firebase (for the backend)
 
+
 ### I Learned
 - Advanced Redux and React Practices
 - Optimizing API calls
 - Memoization 
 - Firebase Cloud Firestore Database operations
+- Apex Charts For plotting graphs
