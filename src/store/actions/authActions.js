@@ -1,11 +1,11 @@
 import { auth, expensesDatabase } from "../../Utilities/firebase"
 import { AuthConstants, ExpensesConstants, GeneralDataConstants, UserConstants } from "./constants"
 
-const loginSuccess = (dispatch, userData,isDemo=false) => {
+const loginSuccess = (dispatch, userData, isDemo = false) => {
     dispatch({
         type: AuthConstants.LOGIN_SUCCESS,
         payload: {
-            isDemo:isDemo,
+            isDemo: isDemo,
             user: {
                 name: userData.user.displayName,
                 email: userData.user.email,
@@ -33,7 +33,7 @@ export const Login = (email, password) => {
         auth.signInWithEmailAndPassword(email, password).then(userData => {
             loginSuccess(dispatch, userData)
         }).catch(error => {
-            loginFailure(dispatch,error.code)
+            loginFailure(dispatch, error.code)
         })
     }
 }
@@ -42,12 +42,12 @@ export const Logout = () => {
     return dispatch => {
         dispatch({ type: AuthConstants.LOGOUT_REQUEST })
         auth.signOut().then(() => {
-            dispatch({ type:ExpensesConstants.RESET_EXPENSES_REDUCER})
-            dispatch({type:GeneralDataConstants.CLEAR_DATA})
+            dispatch({ type: ExpensesConstants.RESET_EXPENSES_REDUCER })
+            dispatch({ type: GeneralDataConstants.CLEAR_DATA })
             dispatch({ type: AuthConstants.LOGOUT_SUCCESS })
         }).catch(error => {
-            dispatch({type:AuthConstants.LOGOUT_FAILURE,payload:{error}})
-         })
+            dispatch({ type: AuthConstants.LOGOUT_FAILURE, payload: { error } })
+        })
     }
 }
 
@@ -81,117 +81,118 @@ export const SignUp = (email, password) => {
         auth.createUserWithEmailAndPassword(email, password).then(userData => {
             signUpSuccess(dispatch, userData)
         }).catch(error => {
-            signUpFailure(dispatch,error.code)
+            signUpFailure(dispatch, error.code)
         })
     }
 }
 
-export const DemoAuth = (email="johndoe@xyz.com",password="brucewayne") => {
+export const DemoAuth = (email = "johndoe@xyz.com", password = "brucewayne") => {
     console.log('Demo Login')
     return dispatch => {
         dispatch({ type: AuthConstants.LOGIN_REQUEST })
         auth.signInWithEmailAndPassword(email, password).then(userData => {
-            loginSuccess(dispatch, userData,true)
+            loginSuccess(dispatch, userData, true)
         }).catch(error => {
-            loginFailure(dispatch,error.code)
+            loginFailure(dispatch, error.code)
         })
     }
 }
 
 // Updating User Details
-const updateSuccesfull=(dispatch)=>{
+const updateSuccesfull = (dispatch) => {
     dispatch({
-        type:UserConstants.EDIT_SUCCESS,
-        payload:{
-            user:{
-                name:auth.currentUser.displayName,
-                email:auth.currentUser.email,
-                uid:auth.currentUser.uid
+        type: UserConstants.EDIT_SUCCESS,
+        payload: {
+            user: {
+                name: auth.currentUser.displayName,
+                email: auth.currentUser.email,
+                uid: auth.currentUser.uid
             }
         }
     })
 }
-const updateFailed=(dispatch,error)=>{
+const updateFailed = (dispatch, error) => {
     let message
-    if(error==='auth/email-already-in-use'){
-        message="Email already in use, please enter another Email"
+    if (error === 'auth/email-already-in-use') {
+        message = "Email already in use, please enter another Email"
     }
-    if(error==='auth/wrong-password'){
-        message="Verification Failed"
+    if (error === 'auth/wrong-password') {
+        message = "Verification Failed"
     }
-    else{
-        message="Something went wrong. Please try again later."
+    else {
+        message = "Something went wrong. Please try again later."
     }
     dispatch({
-        type:UserConstants.EDIT_FAILURE,
-        payload:{
-            user:{
-                name:auth.currentUser.displayName,
-                email:auth.currentUser.email,
-                uid:auth.currentUser.uid
+        type: UserConstants.EDIT_FAILURE,
+        payload: {
+            user: {
+                name: auth.currentUser.displayName,
+                email: auth.currentUser.email,
+                uid: auth.currentUser.uid
             },
-            editError:message
+            editError: message
         }
     })
 }
-export const UpdateUserProfile=(email,name,Callback)=>{
-    return dispatch=>{
-        dispatch({type:UserConstants.EDIT_REQUEST})
-        auth.currentUser.updateProfile({displayName:name}).then(()=>{
+export const UpdateUserProfile = (email, name, Callback) => {
+    return dispatch => {
+        dispatch({ type: UserConstants.EDIT_REQUEST })
+        auth.currentUser.updateProfile({ displayName: name }).then(() => {
             return auth.currentUser.updateEmail(email)
-        }).then(()=>{
+        }).then(() => {
             updateSuccesfull(dispatch)
             Callback()
-        }).catch(error=>{
+        }).catch(error => {
             // console.log(error)
-            updateFailed(dispatch,error.code)
+            updateFailed(dispatch, error.code)
         })
     }
 }
 
-export const UpdateDemoUserProfile=(email,name,Callback)=>{
-    return dispatch=>{
-        dispatch({type:UserConstants.EDIT_REQUEST})
+export const UpdateDemoUserProfile = (email, name, Callback) => {
+    return dispatch => {
+        dispatch({ type: UserConstants.EDIT_REQUEST })
         dispatch({
-            type:UserConstants.EDIT_SUCCESS,
-            payload:{
-                user:{
-                    name:name,
-                    email:email,
-                    uid:auth.currentUser.uid
+            type: UserConstants.EDIT_SUCCESS,
+            payload: {
+                user: {
+                    name: name,
+                    email: email,
+                    uid: auth.currentUser.uid
                 }
             }
         })
         Callback()
-        
+
     }
 }
 
-export const UpdateUserPassword=(password)=>{
-    return dispatch=>{
+export const UpdateUserPassword = (password) => {
+    return dispatch => {
         return auth.currentUser.updatePassword(password)
     }
 }
 
-export const DeleteUser=(password,Callback)=>{
-    
-    return dispatch=>{
-        expensesDatabase.where('user', '==', auth.currentUser.uid).get().then((querySnapshot)=>{
-            const expensesList=[]
+export const DeleteUser = (password, Callback) => {
+
+    return dispatch => {
+        expensesDatabase.where('user', '==', auth.currentUser.uid).get().then((querySnapshot) => {
+            const expensesList = []
             querySnapshot.forEach((doc) => {
                 expensesList.push(doc.id)
             })
-            expensesList.forEach(item=>{
+            expensesList.forEach(item => {
                 expensesDatabase.doc(item).delete()
             })
             console.log('Deleted Expenses Items')
-            return auth.currentUser.delete() 
-        }).then(()=>{
+            return auth.currentUser.delete()
+        }).then(() => {
             console.log('Deleted Account')
             Callback(Logout)
         })
-        .catch(error=>{
-            updateFailed(dispatch,error.code)
-        })
+            .catch(error => {
+                updateFailed(dispatch, error.code)
+            })
     }
 }
+

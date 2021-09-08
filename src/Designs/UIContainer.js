@@ -20,9 +20,10 @@ export const UiContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    ${props => props.chart ? 'margin:10px 10px; padding:5px' : ''}
     @media screen and (min-width:${mobileSize}){
         width: ${props => props.long ? '50%' : '30%'};
+        ${props => props.chart ? 'margin:5px 5px; padding:5px' : ''}
     }
 `
 
@@ -81,7 +82,7 @@ export const Title = styled.p`
     font-weight: bold;
     font-size: 20px;
     text-decoration: none;
-    margin: ${props=>props.margin?'20px 0':'0'};
+    margin: ${props => props.margin ? '20px 0' : '0'};
     @media screen and (min-width: ${mobileSize}) {
         font-size: 35px;
     }
@@ -113,14 +114,14 @@ export const FormWrapper = styled.form`
     align-items: center;
     z-index:223;
     @media screen and (min-width:700px){
-        width: ${props=>props.edit?'70%':'50%'};
+        width: ${props => props.edit ? '70%' : '50%'};
         padding:10px 20px;
         border: 1px solid ${Colors.blue2};
         box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     }
 `
 
-export const DataItemContainer=styled.div`
+export const DataItemContainer = styled.div`
     display: flex;
     flex-direction:row;
     justify-content: space-between;
@@ -128,7 +129,7 @@ export const DataItemContainer=styled.div`
     width:100%;
     padding:5px 5px;
     margin:5px 0;
-    border:${props=>props.border?'1px solid white':'none'};
+    border:${props => props.border ? '1px solid white' : 'none'};
     @media screen and (min-width:${mobileSize}){
         padding:0 10px;
         margin:20px 0;

@@ -1,23 +1,15 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
+import React from 'react'
 import ReactApexChart from 'react-apexcharts'
-import { HalfContainer } from '../../Designs/Charts';
-import { chartColors } from '../../Utilities/categories';
+import { chartColors } from '../../Utilities/categories'
+
 /**
 * @author
-* @function CurrentMonthPieChart
+* @function CurrentMonthDonutChart
 **/
 
-const CurrentMonthPieChart = (props) => {
+export const CurrentMonthDonutChart = ({ D }) => {
 
-    const D = useSelector(state => state.generalData.currentMonthData)
     const currentMonthData = { ...D }
-
-    useEffect(() => {
-
-    }, [currentMonthData])
-
-
 
     const data = [
         {
@@ -74,8 +66,11 @@ const CurrentMonthPieChart = (props) => {
 
     const labels = data.map(item => item.label)
     const series = data.map(item => item.value)
-
     const options = {
+
+        chart: {
+            type: 'donut'
+        },
         labels: labels,
         dataLabels: {
             enabled: true,
@@ -112,13 +107,14 @@ const CurrentMonthPieChart = (props) => {
                 }
             }
         }]
+
     }
     return (
-        <HalfContainer center>
-            <ReactApexChart options={options} series={series} type="pie" width={'450px'} />
-        </HalfContainer>
+        <ReactApexChart options={options} series={series} type="donut" width={'450px'} />
     )
 
 }
 
-export default CurrentMonthPieChart
+
+
+

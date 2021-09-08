@@ -2,6 +2,7 @@
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import './App.css';
+import { Error404 } from './components/404';
 import Navigation from './components/Navigation/Navigation';
 import TopBar from './components/TopBar';
 import Charts from './containers/Charts';
@@ -29,17 +30,17 @@ function App() {
                             <Route path="/expenses" exact component={Expenses} />
                             <Route path="/charts" exact component={Charts} />
                             <Route path="/settings" exact component={Settings} />
-                            <Redirect to="/home"/>
+                            <Redirect to="/home" />
                         </MainContent>
                     </ContentWrapper>
                 </>
             )
-        } else {    
-            
+        } else {
+
             return (
                 <>
                     <Route path="/" exact component={AuthPage} />
-                    <Redirect to="/"/>
+                    <Redirect to="/" />
                 </>
             )
         }
