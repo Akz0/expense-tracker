@@ -1,6 +1,6 @@
 # Expenses Tracker
 
-[Expenses-Tracker.netlify.app](expense-tracker-om.netlify.app)
+[Expenses-Tracker.netlify.app](https://expense-tracker-om.netlify.app)
 
 A simple expenses recording application in which you can :
 
