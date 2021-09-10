@@ -38,6 +38,9 @@ export const categories = [
     {
         value: 'others',
         name: 'Others'
+    }, {
+        value: 'education',
+        name: 'Education'
     }
 ]
 
@@ -86,6 +89,7 @@ export const chartColors = {
     orange: "#fe6700",
     dark1: "#48929B",
     dark2: "#e0b0ff",
+    dark3: '#bfa4fc'
 }
 
 

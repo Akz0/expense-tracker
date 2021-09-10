@@ -69,6 +69,10 @@ const CurrentMonthPieChart = (props) => {
             label: 'Others',
             value: currentMonthData.others,
 
+        }, {
+            label: 'Education',
+            value: currentMonthData.education,
+
         }
     ]
 

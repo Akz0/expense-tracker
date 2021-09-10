@@ -31,7 +31,7 @@ export const TotalOverTimeArea = ({ expensesList }) => {
             }
         },
         dataLabels: {
-            enabled: true,
+            enabled: false,
             formatter: function (val) {
                 return '₹. ' + val;
             }
@@ -40,7 +40,7 @@ export const TotalOverTimeArea = ({ expensesList }) => {
             curve: 'smooth'
         },
         markers: {
-            size: 2,
+            size: 0,
             style: 'hollow',
         },
         title: {

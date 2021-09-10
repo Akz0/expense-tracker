@@ -29,6 +29,7 @@ export const CalculateCategoryWiseOverTime = (data) => {
         health: [],
         others: [],
         leisure: [],
+        education: [],
     }
 
     const TotalCategoryOverTime = {
@@ -42,6 +43,7 @@ export const CalculateCategoryWiseOverTime = (data) => {
         health: 0,
         others: 0,
         leisure: 0,
+        education: 0,
     }
 
     data.forEach(expense => {

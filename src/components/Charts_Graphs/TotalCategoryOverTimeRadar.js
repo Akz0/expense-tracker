@@ -54,7 +54,7 @@ export const TotalCategoryOverTimeRadar = ({ D }) => {
             }
         },
         xaxis: {
-            categories: ['Food', 'Bills', 'Finance', 'Travels', 'Daily', 'Clothing', 'Utilities', 'Health', 'Others', 'Leisure']
+            categories: ['Food', 'Bills', 'Finance', 'Travels', 'Daily', 'Clothing', 'Utilities', 'Health', 'Others', 'Leisure', 'Education']
         },
         yaxis: {
             show: false,

@@ -17,9 +17,10 @@ const initialState = {
         health: 0,
         others: 0,
         leisure: 0,
+        education: 0,
         highestExpenseCategory: {
-            category:'',
-            amount:'',
+            category: '',
+            amount: '',
         },
     },
     eachMonthData: [],
@@ -70,7 +71,7 @@ const countTotalMonths = (expensesList) => {
     return 0;
 }
 
-const CalculateCurrentMonthData=(oldCurrentMonthData,expensesList)=>{
+const CalculateCurrentMonthData = (oldCurrentMonthData, expensesList) => {
     const UpdatedCurrentMonthData = { ...oldCurrentMonthData }
 
     expensesList.forEach(expense => {
@@ -89,7 +90,7 @@ const CalculateCurrentMonthData=(oldCurrentMonthData,expensesList)=>{
 
 const calculateInitialData = (state, payload) => {
     const expensesList = payload.expensesList
-    const UpdatedCurrentMonthData = CalculateCurrentMonthData(state.currentMonthData,expensesList)
+    const UpdatedCurrentMonthData = CalculateCurrentMonthData(state.currentMonthData, expensesList)
     const UpdatedEachMonthData = countTotalMonths(expensesList)
     state = {
         ...state,
@@ -106,7 +107,7 @@ const addedNewData = (state, payload) => {
     if (isCurrentMonth(newExpense.date)) {
         UpdatedCurrentMonthData[newExpense.category] += newExpense.amount
         UpdatedCurrentMonthData['total'] += newExpense.amount
-        UpdatedCurrentMonthData.highestExpenseCategory=CalculateHighestExpenseCategory(UpdatedCurrentMonthData)
+        UpdatedCurrentMonthData.highestExpenseCategory = CalculateHighestExpenseCategory(UpdatedCurrentMonthData)
     }
     state = {
         ...state,
@@ -128,7 +129,7 @@ const GeneralDataReducer = (state = initialState, action) => {
             state = calculateInitialData(state, action.payload)
             break;
         case GeneralDataConstants.INITIAL_CALCULATE_DATA_EMPTY:
-            state={
+            state = {
                 ...initialState
             }
             break;
@@ -136,10 +137,10 @@ const GeneralDataReducer = (state = initialState, action) => {
             state = addedNewData(state, action.payload)
             break;
         case GeneralDataConstants.EDITED_EXPENSE:
-            state=calculateInitialData(state, action.payload)
+            state = calculateInitialData(state, action.payload)
             break;
         case GeneralDataConstants.CLEAR_DATA:
-            state=_.cloneDeep(initialState)
+            state = _.cloneDeep(initialState)
             break;
         default: state = { ...state }
     }
